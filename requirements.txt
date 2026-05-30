@@ -1,0 +1,40 @@
+# ============================================================
+# AI-Powered Business & Market Intelligence Agent
+# Python Dependencies
+# ============================================================
+
+# LLM & Agent Framework
+groq>=0.9.0
+langchain>=0.2.0
+langchain-groq>=0.1.6
+langchain-community>=0.2.0
+langgraph>=0.1.19
+
+# Vector Store & Embeddings
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+
+# Web Scraping & Extraction
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+trafilatura>=1.9.0
+lxml>=5.2.0
+httpx>=0.27.0
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Frontend
+streamlit>=1.36.0
+streamlit-extras>=0.4.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.7.0
+tenacity>=8.3.0
+rich>=13.7.0
+loguru>=0.7.2
+
+# Text Processing
+tiktoken>=0.7.0

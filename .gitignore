@@ -1,0 +1,30 @@
+# Environment
+.env
+venv/
+.venv/
+env/
+
+# Data & runtime
+data/chroma_db/
+data/*.log
+reports/*.md
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+*.egg-info/
