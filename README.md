@@ -86,7 +86,7 @@ Streamlit dashboard / CLI output / saved report
 ### 1. Clone the Project
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/khushboo-codes16/market_intelligence_agent>
 cd market_intel_agent
 ```
 
