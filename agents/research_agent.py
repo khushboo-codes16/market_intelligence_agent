@@ -7,6 +7,10 @@ from typing import Dict, Any
 
 from models.state import IntelligenceState
 from tools.scraper import scrape_company_website, scrape_news_articles
+from tools.public_sources import (
+    collect_public_intelligence_sources,
+    summarise_public_source_counts,
+)
 from rag.rag_pipeline import get_rag_pipeline
 from utils.logger import logger
 
@@ -61,12 +65,26 @@ def research_agent(state: Dict[str, Any]) -> Dict[str, Any]:
 
     intel.agent_logs.append(f"[ResearchAgent] Collected {len(articles)} news articles.")
 
-    # ── 4. Ingest into RAG ─────────────────────────────────────
+    # ── 4. Public enrichment sources ───────────────────────────
+    # Best-effort connectors for public jobs, funding, reviews,
+    # Product Hunt, RSS/press, and traffic pages/snippets.
+    enrichment_docs = collect_public_intelligence_sources(company, website)
+    intel.raw_documents.extend(enrichment_docs)
+    intel.sources.extend([doc["url"] for doc in enrichment_docs if doc.get("url")])
+
+    source_counts = summarise_public_source_counts(enrichment_docs)
+    if source_counts:
+        counts_str = ", ".join(f"{k}: {v}" for k, v in sorted(source_counts.items()))
+        intel.agent_logs.append(f"[ResearchAgent] Public enrichment collected ({counts_str}).")
+    else:
+        intel.agent_logs.append("[ResearchAgent] Public enrichment found no additional documents.")
+
+    # ── 5. Ingest into RAG ─────────────────────────────────────
     rag = get_rag_pipeline(collection_name=f"intel_{_sanitize(company)}")
     rag.reset_collection()  # Fresh collection per run
 
     docs_to_ingest = []
-    for page in web_pages:
+    for page in web_pages + enrichment_docs:
         if page.get("text"):
             docs_to_ingest.append({
                 "text": page["text"],
@@ -84,6 +102,46 @@ def research_agent(state: Dict[str, Any]) -> Dict[str, Any]:
     count = rag.ingest_documents(docs_to_ingest)
     intel.rag_chunks_count = count
     intel.agent_logs.append(f"[ResearchAgent] Ingested {count} chunks into ChromaDB.")
+
+    # ── 6. Compute data confidence based on what we collected ──
+    # This drives the confidence badges shown in the UI on every section.
+    pages_scraped = len(web_pages) + len(enrichment_docs)
+    articles_scraped = len(articles)
+
+    if count >= 30 and pages_scraped >= 3:
+        base_confidence = "high"
+    elif count >= 10 or pages_scraped >= 1:
+        base_confidence = "medium"
+    else:
+        base_confidence = "low"
+
+    # Pricing is harder to scrape reliably — cap one level lower
+    pricing_confidence = {"high": "medium", "medium": "low", "low": "low"}[base_confidence]
+
+    # News-dependent sections benefit from articles
+    news_confidence = base_confidence if articles_scraped >= 3 else (
+        "medium" if base_confidence == "high" else "low"
+    )
+
+    intel.data_confidence = {
+        "company_overview":       base_confidence,
+        "products_services":      base_confidence,
+        "product_positioning":    base_confidence,
+        "value_propositions":     base_confidence,
+        "market_messaging":       base_confidence,
+        "pricing_insights":       pricing_confidence,
+        "market_differentiation": base_confidence,
+        "competitor_analysis":    "medium",   # always partial — external scraping
+        "lead_signals":           news_confidence,
+        "lead_score":             news_confidence,
+        "outreach_recommendations": news_confidence,
+        "recent_activities":      news_confidence,
+        "swot_analysis":          base_confidence,
+    }
+    intel.agent_logs.append(
+        f"[ResearchAgent] Data confidence set to '{base_confidence}' "
+        f"({pages_scraped} pages, {articles_scraped} articles, {count} chunks)."
+    )
 
     # Deduplicate sources
     intel.sources = list(dict.fromkeys(intel.sources))

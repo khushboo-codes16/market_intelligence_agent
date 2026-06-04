@@ -1,0 +1,35 @@
+##Probmt By Different AI tools
+
+AI-Powered Business & Market Intelligence Agents 
+
+Understanding and Logical Perspective - Chat GPT
+Work flow and Architecture - Chat GPT
+Implementation plan - Cloude
+Tool, Technology stack - Cloude
+Improvement and testing - codex
+
+Chat GPT
+Prombt - I recieved this problem statement of hackathon, so explain me easy way and what is the actual problem statement and also give me work flow and architecture that how i will deal with this and solution. and i have to complete both train there is no choice, i have to complete the whole task. So help me to complete this.
+
+Probmt- Give me description and probmt for complete implementation of this problem statement so that i can give this to Claude for full source code and implementation part and also i will attach problem statement document to Claude ai, 
+
+Cloude AI
+
+Probmt-You are a Senior AI Architect, LangGraph Expert, GenAI Engineer, and Full Stack Developer.
+Your task is to design and implement a complete hackathon-ready project based on the attached problem statement document.
+Read the attached hackathon document carefully and build the entire solution according to its requirements.
+Do not provide a partial solution, sample code, pseudocode, or high-level explanation.
+
+Probmt- My project runs and gives output, now next phase I have to do, just give me step vise step and also i pushed my project to github also
+github repo - https://github.com/khushboo-codes16/market_intelligence_agent.
+
+Probmt- Now also give me content of presentation slides of maximum 5 in that give me hackathon problem statement explanation,so by the presentation i can explain them whole project and also provide me architecture and flow charts diagram design  of this project.
+
+Probmt- "Now also give me script to explain whole problem statement solution , what i make, and how i do prob-mt and how i started, what logical perspective I choose and think, and hows the project workflow and what technical stack i used and why, also explain the architecture and how the output is coming. "
+
+Probmt - provide me what more i can do in my project for better performance and best testing result and what future implications can i do now also.
+
+Probmt - As you provide me a guide on improvements, testing, and future scopes, so one by one i want to implement on my working project of hackathon so give me step vise step changes i have to done in my working project of market_intel_agent.
+and last also provide me flow chart and architecture.
+
+

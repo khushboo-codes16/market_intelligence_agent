@@ -1,0 +1,86 @@
+[
+  {
+    "company": "ElevenLabs",
+    "timestamp": "20260604_114550",
+    "datetime": "Jun 04, 2026 11:45",
+    "lead_score": 42,
+    "competitor_count": 4,
+    "signal_count": 10,
+    "competitors": [
+      "Google Cloud",
+      "Amazon Polly",
+      "Microsoft Azure Cognitive Services",
+      "IBM Watson Text to Speech"
+    ],
+    "filepath": "reports/intel_elevenlabs_20260604_114550.md",
+    "rag_chunks": 34
+  },
+  {
+    "company": "HubSpot",
+    "timestamp": "20260604_112823",
+    "datetime": "Jun 04, 2026 11:28",
+    "lead_score": 15,
+    "competitor_count": 5,
+    "signal_count": 5,
+    "competitors": [
+      "Marketo",
+      "Salesforce",
+      "Pardot",
+      "Zoho CRM",
+      "Freshworks"
+    ],
+    "filepath": "reports/intel_hubspot_20260604_112823.md",
+    "rag_chunks": 6
+  },
+  {
+    "company": "salesforce",
+    "timestamp": "20260604_111125",
+    "datetime": "Jun 04, 2026 11:11",
+    "lead_score": 25,
+    "competitor_count": 5,
+    "signal_count": 6,
+    "competitors": [
+      "Microsoft Dynamics",
+      "Oracle CRM",
+      "HubSpot CRM",
+      "Zoho CRM",
+      "SAP CRM"
+    ],
+    "filepath": "reports/intel_salesforce_20260604_111125.md",
+    "rag_chunks": 15
+  },
+  {
+    "company": "salesforce",
+    "timestamp": "20260604_111120",
+    "datetime": "Jun 04, 2026 11:11",
+    "lead_score": 25,
+    "competitor_count": 5,
+    "signal_count": 6,
+    "competitors": [
+      "Microsoft Dynamics",
+      "Oracle CRM",
+      "HubSpot CRM",
+      "Zoho CRM",
+      "SAP CRM"
+    ],
+    "filepath": "reports/intel_salesforce_20260604_111120.md",
+    "rag_chunks": 15
+  },
+  {
+    "company": "salesforce",
+    "timestamp": "20260604_111055",
+    "datetime": "Jun 04, 2026 11:10",
+    "lead_score": 25,
+    "competitor_count": 5,
+    "signal_count": 6,
+    "competitors": [
+      "Microsoft Dynamics",
+      "Oracle CRM",
+      "HubSpot CRM",
+      "Zoho CRM",
+      "SAP CRM"
+    ],
+    "filepath": "reports/intel_salesforce_20260604_111055.md",
+    "rag_chunks": 15
+  }
+]

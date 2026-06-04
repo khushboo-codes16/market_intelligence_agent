@@ -38,3 +38,10 @@ loguru>=0.7.2
 
 # Text Processing
 tiktoken>=0.7.0
+
+# PDF Export (Step 3)
+weasyprint>=60.0
+markdown>=3.6
+
+# Signal Timeline Chart (Step 8)
+plotly>=5.22.0

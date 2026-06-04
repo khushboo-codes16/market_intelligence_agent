@@ -97,6 +97,7 @@ class IntelligenceState(BaseModel):
     lead_signals: List[LeadSignal] = Field(default_factory=list)
     lead_score: Optional[LeadScore] = None
     outreach_recommendations: str = ""
+    outreach_email_draft: str = ""  # STEP 6: ready-to-send cold email draft
 
     # Final report
     executive_summary: str = ""
@@ -108,6 +109,11 @@ class IntelligenceState(BaseModel):
     errors: List[str] = Field(default_factory=list)
     agent_logs: List[str] = Field(default_factory=list)
     status: str = "initializing"
+
+    # STEP 5: Data confidence per section
+    # Values: "high" | "medium" | "low"
+    # Set by each agent based on how much scraped data backed the output.
+    data_confidence: Dict[str, str] = Field(default_factory=dict)
 
     class Config:
         arbitrary_types_allowed = True

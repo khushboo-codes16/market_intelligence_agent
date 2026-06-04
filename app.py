@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# app.py
 # ============================================================
 # Main entry point for the Market Intelligence Agent
 # ============================================================

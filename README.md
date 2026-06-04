@@ -1,267 +1,390 @@
-# 🔍 AI-Powered Business & Market Intelligence Agent
+# AI-Powered Business & Market Intelligence Agent
 
-> **DS Intern Hackathon — May 2026**  
-> Automated competitive intelligence and lead scoring powered by LangGraph, Groq, and RAG.
+Built for the DS Intern Hackathon, May 2026.
 
----
+This project is an AI assistant for product marketing and lead generation research. A user enters a company name, website, product, or scenario, and the system gathers public information, builds a RAG index, runs multiple intelligence agents, and produces a business-readable report with competitors, positioning, lead signals, scores, outreach recommendations, sources, and downloadable outputs.
 
-## 📐 Architecture
+## What It Does
 
+The agent supports both hackathon tracks:
+
+| Track | Implemented Capability |
+|-------|------------------------|
+| Product Marketing Intelligence | Analyzes company overview, products, positioning, value propositions, messaging, pricing, differentiation, competitors, and SWOT. |
+| Lead Generation Intelligence | Extracts buying signals from public data, computes a 0-100 lead score, summarizes recent activity, and generates outreach recommendations plus a cold email draft. |
+
+Main features:
+
+- Streamlit dashboard for interactive use
+- CLI mode for running the pipeline from terminal
+- Public website and news scraping
+- Best-effort public enrichment from LinkedIn Jobs, Crunchbase, Tracxn, G2, Capterra, Product Hunt, RSS/press feeds, and SimilarWeb pages/snippets
+- RAG pipeline with ChromaDB and SentenceTransformers
+- Groq LLM integration
+- Parallel execution of product marketing, competitor, and lead generation agents
+- Disk-backed LLM response cache
+- Markdown report generation
+- PDF export from the dashboard
+- Run history and side-by-side comparison of past runs
+- Batch company analysis from pasted names or CSV
+- Data confidence badges per report section
+- Signal timeline visualization
+- Streaming LLM executive briefing in the dashboard
+- Unit and integration tests with external services mocked
+
+## Project Flow
+
+```text
+User input
+  |
+  v
+Research Agent
+  - Resolves/uses company website
+  - Scrapes public company pages
+  - Collects public news/search results
+  - Cleans and chunks text
+  - Stores chunks in ChromaDB
+  |
+  v
+Parallel analysis phase
+  - Product Marketing Agent
+  - Competitor Analysis Agent
+  - Lead Generation Agent
+  |
+  v
+Report Generation Agent
+  - SWOT
+  - Executive summary
+  - Final markdown report
+  |
+  v
+Streamlit dashboard / CLI output / saved report
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                     STREAMLIT DASHBOARD (ui/)                        │
-│  Input: Company Name, Website, Product, Scenario                     │
-│  Output: Overview · Competitors · Marketing · Leads · SWOT · Sources│
-└────────────────────────────┬────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│              LANGGRAPH SUPERVISOR ORCHESTRATOR (workflow/)           │
-│                                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────┐ │
-│  │ Research │→│ Product  │→│Competitor│→│ Lead Gen │→│Report│ │
-│  │  Agent   │  │Marketing │  │Analysis  │  │  Agent   │  │Agent │ │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──┬───┘ │
-└───────┼─────────────┼─────────────┼─────────────┼────────────┼─────┘
-        │             │             │             │            │
-        ▼             ▼             ▼             ▼            ▼
-┌───────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
-│  SCRAPER  │  │  GROQ    │  │  GROQ    │  │  GROQ    │  │  GROQ    │
-│  + News   │  │  LLM     │  │  LLM     │  │  LLM     │  │  LLM     │
-│  (tools/) │  │(Llama 3) │  │(Llama 3) │  │(Llama 3) │  │(Llama 3) │
-└───────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
-        │
-        ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    RAG PIPELINE (rag/)                               │
-│  ChromaDB (vector store) + SentenceTransformers (embeddings)        │
-│  Chunk → Embed → Store → Retrieve → Context → LLM                  │
-└─────────────────────────────────────────────────────────────────────┘
-```
 
-### Agent Descriptions
+## Architecture
 
-| Agent | Role |
-|-------|------|
-| **Supervisor Agent** | Orchestrates the LangGraph workflow, routes between agents based on status |
-| **Research Agent** | Scrapes company website + news articles, ingests into ChromaDB RAG |
-| **Product Marketing Agent** | Analyzes positioning, messaging, value props, pricing, differentiation |
-| **Competitor Analysis Agent** | Discovers competitors, profiles them, builds comparison tables |
-| **Lead Generation Agent** | Extracts buying signals, computes lead score, generates outreach recs |
-| **Report Generation Agent** | Compiles SWOT, executive summary, and the final BI report |
+| Module | Purpose |
+|--------|---------|
+| `app.py` | Main entry point. Runs CLI mode when arguments are provided, otherwise launches Streamlit. |
+| `ui/dashboard.py` | Streamlit dashboard with inputs, tabs, downloads, history, comparison, batch analysis, and visualizations. |
+| `workflow/graph.py` | LangGraph workflow and parallel agent orchestration. |
+| `agents/research_agent.py` | Public data collection and RAG ingestion. |
+| `agents/product_marketing_agent.py` | Product, positioning, messaging, pricing, and differentiation analysis. |
+| `agents/competitor_analysis_agent.py` | Competitor discovery, competitor profiling, and comparison table generation. |
+| `agents/lead_generation_agent.py` | Signal extraction, lead scoring, outreach recommendations, and email draft generation. |
+| `agents/report_generation_agent.py` | SWOT, executive summary, and final report compilation. |
+| `rag/rag_pipeline.py` | ChromaDB vector store and SentenceTransformer embeddings. |
+| `tools/scraper.py` | Website/news scraping helpers using requests, BeautifulSoup, and Trafilatura. |
+| `tools/llm_client.py` | Groq client wrapper with retry logic and LLM caching. |
+| `reports/report_saver.py` | Markdown report saving, run history, and PDF generation. |
+| `models/state.py` | Pydantic models for shared pipeline state and structured outputs. |
+| `utils/` | Logging, confidence badges, text cleaning, chunking, and helpers. |
+| `tests/` | Unit and mocked integration tests. |
 
----
+## Setup
 
-## 🚀 Quick Start
-
-### 1. Clone and Set Up
+### 1. Clone the Project
 
 ```bash
 git clone <repo-url>
-cd market_intel
+cd market_intel_agent
+```
 
-# Create conda environment
-conda create --name agent python=3.11
-conda activate agent  
+### 2. Create a Python Environment
 
-# Install dependencies
+Python 3.11 is recommended.
+
+```bash
+conda create --name market-intel-agent python=3.11
+conda activate market-intel-agent
+```
+
+Or with `venv`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+The first run may download the SentenceTransformers embedding model.
 
-Get your free Groq API key at: https://console.groq.com
+### 4. Configure Environment Variables
 
-### 3. Run Streamlit Dashboard
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Then add your Groq API key:
+
+```text
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+You can get a Groq API key from `https://console.groq.com`.
+
+## Running the Project
+
+### Streamlit Dashboard
 
 ```bash
 streamlit run ui/dashboard.py
 ```
 
-The app will open at `http://localhost:8501`
+The dashboard usually opens at:
 
-### 4. Run CLI Mode (Optional)
+```text
+http://localhost:8501
+```
+
+You can enter:
+
+- Company name
+- Company website
+- Product name
+- Product or market scenario
+
+### CLI Mode
 
 ```bash
 python app.py OpenAI --website https://openai.com --product "ChatGPT"
-python app.py ElevenLabs --scenario "AI voice agent for lead generation"
+python app.py ElevenLabs --website https://elevenlabs.io --scenario "AI voice agent for lead generation"
 python app.py Salesforce --product "Salesforce Einstein"
 ```
 
----
+CLI mode prints a preview of the generated report and saves the full markdown report under `reports/`.
 
-## 📁 Project Structure
+## Example Input
 
-```
-market_intel/
-│
-├── agents/                         # Multi-agent implementations
-│   ├── __init__.py
-│   ├── research_agent.py           # Data collection & RAG ingestion
-│   ├── product_marketing_agent.py  # Marketing intelligence analysis
-│   ├── competitor_analysis_agent.py # Competitor discovery & profiling
-│   ├── lead_generation_agent.py    # Signal extraction & lead scoring
-│   └── report_generation_agent.py  # Final report compilation
-│
-├── workflow/                       # LangGraph orchestration
-│   ├── __init__.py
-│   └── graph.py                    # Supervisor + StateGraph definition
-│
-├── tools/                          # Reusable tool modules
-│   ├── __init__.py
-│   ├── scraper.py                  # Web scraping (BS4 + Trafilatura)
-│   └── llm_client.py              # Groq API wrapper
-│
-├── rag/                            # RAG pipeline
-│   ├── __init__.py
-│   └── rag_pipeline.py            # ChromaDB + SentenceTransformers
-│
-├── models/                         # Pydantic state models
-│   ├── __init__.py
-│   └── state.py                   # IntelligenceState + sub-models
-│
-├── ui/                             # Streamlit frontend
-│   ├── __init__.py
-│   └── dashboard.py               # Full multi-tab dashboard
-│
-├── reports/                        # Report management
-│   ├── __init__.py
-│   └── report_saver.py
-│
-├── config/                         # Configuration management
-│   ├── __init__.py
-│   └── settings.py                # Env-var based settings
-│
-├── utils/                          # Shared utilities
-│   ├── __init__.py
-│   ├── logger.py                  # Loguru logger
-│   └── text_utils.py              # Cleaning, chunking, normalization
-│
-├── data/                           # Runtime data (gitignored)
-│   └── chroma_db/                 # ChromaDB persistence
-│
-├── app.py                         # Main entry point
-├── requirements.txt
-├── .env.example
-└── README.md
-```
-
----
-
-## 🔧 Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GROQ_API_KEY` | **Required** | Your Groq API key |
-| `LLM_MODEL` | `llama-3.3-70b-versatile` | Groq model to use |
-| `LLM_TEMPERATURE` | `0.3` | LLM sampling temperature |
-| `LLM_MAX_TOKENS` | `4096` | Max tokens per LLM call |
-| `CHROMA_PERSIST_DIR` | `./data/chroma_db` | ChromaDB storage path |
-| `EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | SentenceTransformers model |
-| `CHUNK_SIZE` | `800` | RAG chunk size (chars) |
-| `CHUNK_OVERLAP` | `150` | RAG chunk overlap (chars) |
-| `TOP_K_RESULTS` | `5` | RAG retrieval top-k |
-| `REQUEST_TIMEOUT` | `15` | HTTP request timeout (s) |
-| `REQUEST_DELAY` | `1.5` | Delay between scrape requests (s) |
-| `MAX_PAGES_PER_DOMAIN` | `5` | Max pages to scrape per site |
-
----
-
-## 📊 Sample Inputs & Outputs
-
-### Input
-```
+```text
 Company Name: ElevenLabs
 Website: https://elevenlabs.io
 Scenario: A company launching a voice-based AI agent for taking calls and generating leads
 ```
 
-### Output Structure
-1. **Executive Summary** — Boardroom-ready 3-paragraph overview
-2. **Company Overview** — Mission, ICP, scale
-3. **Products & Services** — Feature breakdown
-4. **Competitor Analysis** — Table + profiles (Murf, Resemble, PlayHT, etc.)
-5. **Product Positioning** — Positioning themes and target audience
-6. **Market Messaging** — Brand voice, taglines, CTAs
-7. **Pricing Insights** — Tiers and strategy
-8. **Recent Activities** — Funding, launches, news
-9. **Lead Signals** — Specific hiring, funding, launch signals
-10. **Lead Score** — 0-100 with breakdown + justification
-11. **Outreach Recommendations** — Personalized angles and talking points
-12. **SWOT Analysis** — 4-quadrant strategic assessment
-13. **Sources** — All URLs scraped and referenced
+## Example Output Sections
 
----
+The generated report includes:
 
-## 🧠 AI Usage Disclosure
+1. Executive summary
+2. Company overview
+3. Products and services
+4. Competitor analysis
+5. Competitor comparison table
+6. Product positioning
+7. Market messaging
+8. Value propositions
+9. Pricing insights
+10. Market differentiation
+11. Recent activities
+12. Lead signals
+13. Lead score with breakdown
+14. Outreach recommendations
+15. Cold email draft
+16. SWOT analysis
+17. Sources and references
 
-As required by hackathon rules, here's where AI was used:
+## Data Sources
+
+The system uses only public data sources:
+
+- Company website pages
+- Public news/search results through DuckDuckGo HTML search
+- Public competitor websites
+- User-provided public URLs
+- Public LinkedIn Jobs pages/search snippets for hiring signals
+- Public Crunchbase and Tracxn pages/search snippets for funding signals
+- Public G2 and Capterra pages/search snippets for review and pain-point signals
+- Public Product Hunt pages/search snippets for launch/community signals
+- Public RSS/Atom feeds discovered from company websites
+- Public SimilarWeb pages/search snippets for directional traffic signals
+
+The project does not use login-protected, paid, confidential, or private data sources.
+
+## AI Usage
+
+AI is used for meaningful analysis steps, not only formatting.
 
 | Component | AI Usage |
 |-----------|----------|
-| Competitor identification | LLM (Groq Llama 3.3) |
-| Company/product analysis | LLM with RAG context |
-| Signal extraction | LLM structured output |
-| Lead score justification | LLM text generation |
-| SWOT generation | LLM structured output |
-| Executive summary | LLM text generation |
-| Outreach recommendations | LLM text generation |
-| Text embedding | SentenceTransformers |
-| Code assistance | Claude (disclosed) |
+| Company/product analysis | LLM analysis grounded in retrieved public context |
+| Competitor identification | LLM extracts likely direct competitors |
+| Competitor profiling | LLM summarizes positioning, strengths, weaknesses, and messaging |
+| Signal extraction | LLM extracts funding, hiring, launch, expansion, and partnership signals |
+| Outreach recommendations | LLM creates personalized sales angles and talking points |
+| Email draft | LLM writes a short cold outreach email based on the strongest signal |
+| SWOT analysis | LLM generates structured strengths, weaknesses, opportunities, and threats |
+| Executive summary | LLM summarizes the final intelligence report |
+| RAG retrieval | SentenceTransformer embeddings retrieve relevant scraped context |
+| Coding/design help | Claude/Codex assistance was used during development |
 
----
+## Lead Scoring
 
-## 🐛 Troubleshooting
+Lead score is computed from detected signals and capped at 100.
 
-### "GROQ_API_KEY is not set"
-→ add your key from https://console.groq.com
+| Signal Type | Max Points | Why It Matters |
+|-------------|------------|----------------|
+| Funding | 30 | Fresh capital often means available budget and growth intent. |
+| Hiring | 25 | Hiring indicates expansion and possible need for new tools. |
+| Product launch | 20 | Launch activity creates needs around marketing, sales, and operations. |
+| Expansion | 15 | New regions or markets often require new infrastructure and vendors. |
+| Partnership | 10 | Partnerships show ecosystem activity and integration readiness. |
 
-### "No module named 'chromadb'"
-→ Run: `pip install -r requirements.txt`
+Each signal also has a confidence level:
 
-### "Could not fetch homepage"
-→ The company website may block scrapers. Try providing a different URL or leave blank.
+| Confidence | Multiplier |
+|------------|------------|
+| High | 1.0 |
+| Medium | 0.6 |
+| Low | 0.3 |
 
-### Slow first run
-→ First run downloads the SentenceTransformers embedding model (~90MB). Cached after first use.
+## Dashboard Features
+
+The Streamlit dashboard includes:
+
+- Input sidebar with quick examples
+- Pipeline progress indicator
+- Overview tab
+- Competitor tab
+- Marketing intelligence tab
+- Lead intelligence tab
+- SWOT tab
+- Sources and execution logs tab
+- Batch analysis tab
+- Markdown download
+- PDF download
+- Streaming executive briefing button
+- Run history loader
+- Past-run comparison view
+- LLM cache clear button
+
+## Reports and Runtime Files
+
+Generated runtime files are stored locally:
+
+| Path | Purpose |
+|------|---------|
+| `reports/*.md` | Saved markdown intelligence reports |
+| `reports/run_history.json` | Lightweight run history for the UI |
+| `data/chroma_db/` | ChromaDB vector database |
+| `data/llm_cache.json` | Disk-backed LLM response cache |
+| `data/app.log` | Application logs when enabled |
+
+Most runtime files should not be committed unless they are intentionally included as sample output.
+
+## Testing
+
+Run tests with:
+
+```bash
+pytest -q
+```
+
+The tests cover:
+
+- Pydantic models
+- Lead scoring logic
+- LLM cache behavior
+- Report saving and run history
+- Scraper helpers with mocked network calls
+- Confidence badge helpers
+- Signal date parsing
+- Mocked pipeline integration and parallel merge behavior
+
+Current local status: `99 passed, 1 skipped`.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `GROQ_API_KEY` | Required | Groq API key. |
+| `LLM_MODEL` | `llama-3.3-70b-versatile` | Groq model name. |
+| `LLM_TEMPERATURE` | `0.3` | LLM sampling temperature. |
+| `LLM_MAX_TOKENS` | `4096` | Max tokens per LLM response. |
+| `CHROMA_PERSIST_DIR` | `./data/chroma_db` | ChromaDB persistence directory. |
+| `CHROMA_COLLECTION_NAME` | `market_intel` | Default Chroma collection name. |
+| `EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | SentenceTransformer model. |
+| `REQUEST_TIMEOUT` | `15` | HTTP request timeout in seconds. |
+| `REQUEST_DELAY` | `1.5` | Delay between scraping requests. |
+| `MAX_PAGES_PER_DOMAIN` | `5` | Max pages scraped from one domain. |
+| `USER_AGENT` | Browser-like user agent | User agent for HTTP requests. |
+| `CHUNK_SIZE` | `800` | RAG chunk size in characters. |
+| `CHUNK_OVERLAP` | `150` | RAG chunk overlap in characters. |
+| `TOP_K_RESULTS` | `5` | Default number of retrieved RAG chunks. |
+| `LEAD_SCORE_HIRING_WEIGHT` | `25` | Max hiring signal score. |
+| `LEAD_SCORE_FUNDING_WEIGHT` | `30` | Max funding signal score. |
+| `LEAD_SCORE_LAUNCH_WEIGHT` | `20` | Max launch signal score. |
+| `LEAD_SCORE_EXPANSION_WEIGHT` | `15` | Max expansion signal score. |
+| `LEAD_SCORE_PARTNERSHIP_WEIGHT` | `10` | Max partnership signal score. |
+| `LOG_LEVEL` | `INFO` | Logging verbosity. |
+| `LOG_FILE` | `./data/app.log` | Log file path. |
+| `REPORTS_DIR` | `./reports` | Saved reports directory. |
+
+## Troubleshooting
+
+### `GROQ_API_KEY is not set`
+
+Create `.env` from `.env.example` and add your Groq API key.
+
+### First run is slow
+
+The embedding model is downloaded on first use. Later runs are faster.
+
+### Website scraping returns little or no content
+
+Some sites block scraping or render content with JavaScript. Try providing a more specific public URL, such as a pricing, blog, product, or about page.
 
 ### ChromaDB errors
-→ Delete `./data/chroma_db` directory and restart.
+
+Stop the app, delete `data/chroma_db/`, and rerun the pipeline.
 
 ### Low-quality output for obscure companies
-→ Provide the website URL explicitly. The LLM will use its knowledge when scraping fails.
 
----
+Add the company website and a clear product/scenario description. More public context improves the report.
 
-## 🔮 Architecture Decisions
+### PDF export fails
 
-1. **LangGraph over plain Python** — State machine makes agent coordination explicit and debuggable
-2. **Groq (not OpenAI)** — Free tier available, fastest inference for hackathon
-3. **ChromaDB + SentenceTransformers** — Local, no API cost, fast for our data volumes
-4. **Trafilatura + BS4 fallback** — Better content extraction than BS4 alone
-5. **DuckDuckGo HTML** — No API key required for news search
-6. **Pydantic state models** — Type safety throughout the pipeline
-7. **Per-company collections** — Each run gets its own ChromaDB collection, no cross-contamination
+Make sure `weasyprint` and `markdown` are installed from `requirements.txt`. Linux systems may also need native WeasyPrint dependencies depending on the environment.
 
----
+## Known Limitations
 
-## 📈 Lead Scoring System
+- Scraping quality depends on public website accessibility.
+- Some websites block automated requests.
+- News freshness depends on DuckDuckGo search results.
+- Lead scoring is heuristic, not trained on real conversion outcomes.
+- LinkedIn Jobs, Crunchbase, Tracxn, G2, Capterra, Product Hunt, RSS, and SimilarWeb connectors are best-effort public-page/snippet collectors, not official paid API integrations.
+- The system uses public information only and should not be treated as a substitute for verified CRM or financial data.
 
-The lead score (0-100) is computed from 5 signal categories:
+## Future Improvements
 
-| Signal | Max Score | Rationale |
-|--------|-----------|-----------|
-| Funding | 30 pts | Strongest buy signal — fresh capital = budget available |
-| Hiring | 25 pts | Growth mode = tool purchases, willingness to try new vendors |
-| Product Launch | 20 pts | Need for marketing/sales enablement tools |
-| Expansion | 15 pts | New markets = new infrastructure needs |
-| Partnerships | 10 pts | Ecosystem openness, integration readiness |
+- Replace best-effort public-page collectors with official APIs where legally permitted.
+- Improve public source extraction with source-specific parsers.
+- Add CRM export/integration.
+- Train or calibrate lead scoring on historical conversion data.
+- Add scheduled monitoring and alerts when a company score changes.
 
-Each signal is multiplied by a confidence factor (high: 1.0, medium: 0.6, low: 0.3).
+## Hackathon Checklist Status
 
----
+| Requirement | Status |
+|-------------|--------|
+| Working demo or script | Done |
+| Company/domain/scenario input | Done |
+| Prompt or AI workflow | Done in agent code and `APPROACH.md` |
+| Public data sources | Done |
+| Final report with sources and recommendations | Done |
+| README with setup/run steps | Done |
+| Approach notes | Done in `APPROACH.md` |
+| AI usage disclosure | Done |
+| Manual evaluation sheet | Still needs a separate file |
+| Recorded walkthrough/demo artifact | Still needs to be added for submission |
 
-## 👨‍💻 Author
+## License and Ethics
 
-Built for DS Intern Hackathon — May 2026.  
-Tech stack: Python · LangGraph · Groq · ChromaDB · SentenceTransformers · Streamlit · BeautifulSoup · Trafilatura
+This project is intended for educational and hackathon use. It uses public, legally permitted sources only. Do not use it to scrape login-protected, paid, private, confidential, or restricted data.

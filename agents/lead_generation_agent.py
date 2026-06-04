@@ -122,10 +122,53 @@ Make recommendations specific and actionable.""",
         max_tokens=800,
     )
 
+    # ── 5. Email Draft ────────────────────────────────────────
+    # One extra LLM call — generates a ready-to-send cold outreach email
+    # personalised to the strongest detected signal.
+    top_signal = signals[0] if signals else None
+    signal_hook = (
+        f"{top_signal.signal_type}: {top_signal.description}"
+        if top_signal else "general market interest"
+    )
+
+    intel.outreach_email_draft = llm.complete(
+        prompt=f"""Write a personalized cold outreach email to a decision-maker at {company}.
+
+Context:
+- Company: {company}
+- Product/scenario: {product or scenario or "B2B SaaS"}
+- Lead score: {score_info.total_score}/100
+- Strongest signal: {signal_hook}
+
+Format your response EXACTLY like this:
+Subject: [subject line — max 60 chars, reference the signal]
+
+Hi [First Name],
+
+[Opening paragraph — 1-2 sentences referencing the specific signal]
+
+[Value paragraph — 1-2 sentences on what we offer and how it relates]
+
+[CTA paragraph — one clear ask, e.g. "Would you be open to a 15-min call?"]
+
+Best,
+[Your Name]
+
+Rules:
+- Max 150 words total in the body
+- Sound human, not like a template
+- Reference the specific signal ({signal_hook}) naturally
+- No buzzwords like "synergy" or "leverage"
+""",
+        system_prompt=SYSTEM_PROMPT,
+        max_tokens=350,
+        use_cache=False,  # always fresh — email drafts should vary
+    )
+    intel.agent_logs.append("[LeadGenAgent] Email draft generated.")
+
     intel.agent_logs.append("[LeadGenAgent] Lead intelligence analysis complete.")
     intel.status = "leads_complete"
     return intel.model_dump()
-
 
 def _extract_signals(
     signal_type: str,
