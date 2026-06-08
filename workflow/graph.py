@@ -76,7 +76,8 @@ def run_parallel_agents(state: Dict[str, Any]) -> Dict[str, Any]:
 
     results: Dict[str, Dict[str, Any]] = {}
 
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    # Reduce max_workers to limit concurrent LLM token usage and avoid provider rate limits
+    with ThreadPoolExecutor(max_workers=2) as executor:
         futures = {
             executor.submit(fn, dict(base_state)): name
             for name, fn in agents.items()

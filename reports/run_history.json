@@ -1,5 +1,324 @@
 [
   {
+    "company": "Amazon",
+    "timestamp": "20260608_115611",
+    "datetime": "Jun 08, 2026 11:56",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115611.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115607",
+    "datetime": "Jun 08, 2026 11:56",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115607.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115549",
+    "datetime": "Jun 08, 2026 11:55",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115549.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115548",
+    "datetime": "Jun 08, 2026 11:55",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115548.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115541",
+    "datetime": "Jun 08, 2026 11:55",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115541.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115530",
+    "datetime": "Jun 08, 2026 11:55",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115530.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115512",
+    "datetime": "Jun 08, 2026 11:55",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115512.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115416",
+    "datetime": "Jun 08, 2026 11:54",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115416.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115331",
+    "datetime": "Jun 08, 2026 11:53",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115331.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115331",
+    "datetime": "Jun 08, 2026 11:53",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115331.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115255",
+    "datetime": "Jun 08, 2026 11:52",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115255.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115254",
+    "datetime": "Jun 08, 2026 11:52",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115254.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115249",
+    "datetime": "Jun 08, 2026 11:52",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115249.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115145",
+    "datetime": "Jun 08, 2026 11:51",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115145.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Amazon",
+    "timestamp": "20260608_115057",
+    "datetime": "Jun 08, 2026 11:50",
+    "lead_score": 56,
+    "competitor_count": 5,
+    "signal_count": 15,
+    "competitors": [
+      "Walmart",
+      "eBay",
+      "Etsy",
+      "Target",
+      "Alibaba"
+    ],
+    "filepath": "reports/intel_amazon_20260608_115057.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Google",
+    "timestamp": "20260608_114824",
+    "datetime": "Jun 08, 2026 11:48",
+    "lead_score": 41,
+    "competitor_count": 4,
+    "signal_count": 10,
+    "competitors": [
+      "Microsoft",
+      "Amazon",
+      "Facebook",
+      "Bing"
+    ],
+    "filepath": "reports/intel_google_20260608_114824.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Google",
+    "timestamp": "20260608_114821",
+    "datetime": "Jun 08, 2026 11:48",
+    "lead_score": 41,
+    "competitor_count": 4,
+    "signal_count": 10,
+    "competitors": [
+      "Microsoft",
+      "Amazon",
+      "Facebook",
+      "Bing"
+    ],
+    "filepath": "reports/intel_google_20260608_114821.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Google",
+    "timestamp": "20260608_114248",
+    "datetime": "Jun 08, 2026 11:42",
+    "lead_score": 41,
+    "competitor_count": 4,
+    "signal_count": 10,
+    "competitors": [
+      "Microsoft",
+      "Amazon",
+      "Facebook",
+      "Bing"
+    ],
+    "filepath": "reports/intel_google_20260608_114248.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Google",
+    "timestamp": "20260608_114241",
+    "datetime": "Jun 08, 2026 11:42",
+    "lead_score": 41,
+    "competitor_count": 4,
+    "signal_count": 10,
+    "competitors": [
+      "Microsoft",
+      "Amazon",
+      "Facebook",
+      "Bing"
+    ],
+    "filepath": "reports/intel_google_20260608_114241.md",
+    "rag_chunks": 11
+  },
+  {
     "company": "OpenAI",
     "timestamp": "20260605_195936",
     "datetime": "Jun 05, 2026 19:59",

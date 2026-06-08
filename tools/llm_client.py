@@ -10,14 +10,48 @@
 
 import hashlib
 import json
+import re
+import time
 from pathlib import Path
 from typing import Iterator, Optional, List, Dict
 
 from groq import Groq
-from tenacity import retry, stop_after_attempt, wait_exponential
+import threading
 
-from config.settings import GROQ_API_KEY, LLM_MODEL, LLM_TEMPERATURE, LLM_MAX_TOKENS
+from config.settings import GROQ_API_KEY, LLM_MODEL, LLM_TEMPERATURE, LLM_MAX_TOKENS, LLM_MAX_CONCURRENT
 from utils.logger import logger
+
+# Semaphore to limit concurrent LLM calls (reduces token bursts)
+_LLM_SEMAPHORE = threading.BoundedSemaphore(LLM_MAX_CONCURRENT)
+
+# Token limit error types
+class DailyRateLimitError(Exception):
+    pass
+
+
+def _parse_retry_after_seconds(error_text: str) -> Optional[float]:
+    """Extract a recommended retry delay from a Groq rate limit message."""
+    if not error_text:
+        return None
+
+    # Patterns like 'Please try again in 10m6.528s.' or 'Please try again in 2.74s.'
+    match = re.search(r"try again in\s*(?:(\d+(?:\.\d+)?)m)?(?:(\d+(?:\.\d+)?)s)?", error_text)
+    if match:
+        minutes = float(match.group(1)) if match.group(1) else 0.0
+        seconds = float(match.group(2)) if match.group(2) else 0.0
+        retry_after = minutes * 60 + seconds
+        return retry_after if retry_after > 0 else None
+
+    # Fallback numeric seconds only
+    match = re.search(r"try again in\s*(\d+(?:\.\d+)?)\s*s", error_text)
+    if match:
+        return float(match.group(1))
+
+    return None
+
+
+def _is_daily_limit_error(error_text: str) -> bool:
+    return "tokens per day" in error_text.lower() or "TPD" in error_text
 
 # Disk-backed cache file so it survives restarts
 _CACHE_FILE = Path(__file__).resolve().parent.parent / "data" / "llm_cache.json"
@@ -74,7 +108,6 @@ class LLMClient:
         self.max_tokens = LLM_MAX_TOKENS
         _load_cache()
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
     def chat(
         self,
         messages: List[Dict[str, str]],
@@ -88,17 +121,47 @@ class LLMClient:
             all_messages.append({"role": "system", "content": system_prompt})
         all_messages.extend(messages)
 
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=all_messages,
-                temperature=temperature or self.temperature,
-                max_tokens=max_tokens or self.max_tokens,
-            )
-            return response.choices[0].message.content or ""
-        except Exception as e:
-            logger.error(f"LLM call failed: {e}")
-            raise
+        attempt = 0
+        while True:
+            attempt += 1
+            _LLM_SEMAPHORE.acquire()
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=all_messages,
+                    temperature=temperature or self.temperature,
+                    max_tokens=max_tokens or self.max_tokens,
+                )
+                return response.choices[0].message.content or ""
+            except Exception as e:
+                error_text = str(e)
+                retry_after = _parse_retry_after_seconds(error_text)
+                if _is_daily_limit_error(error_text):
+                    logger.error(
+                        "Daily Groq token limit reached. "
+                        f"Provider says: {error_text}"
+                    )
+                    raise DailyRateLimitError(
+                        f"Daily token limit reached. {error_text}"
+                    ) from e
+
+                if retry_after is not None and attempt < 3:
+                    logger.warning(
+                        f"Groq rate limit response suggests retry after {retry_after:.1f}s. "
+                        f"Sleeping before retry #{attempt}..."
+                    )
+                    time.sleep(retry_after)
+                elif attempt < 3:
+                    backoff = min(2 ** attempt, 10)
+                    logger.warning(
+                        f"LLM call failed on attempt {attempt}. Retrying after {backoff}s..."
+                    )
+                    time.sleep(backoff)
+                else:
+                    logger.error(f"LLM call failed after {attempt} attempts: {error_text}")
+                    raise
+            finally:
+                _LLM_SEMAPHORE.release()
 
     def complete(
         self,
@@ -160,23 +223,54 @@ class LLMClient:
         all_messages.append({"role": "user", "content": prompt})
 
         collected: List[str] = []
-        try:
-            stream = self.client.chat.completions.create(
-                model=self.model,
-                messages=all_messages,
-                temperature=temperature if temperature is not None else self.temperature,
-                max_tokens=max_tokens or self.max_tokens,
-                stream=True,
-            )
-            for event in stream:
-                delta = event.choices[0].delta.content or ""
-                if not delta:
-                    continue
-                collected.append(delta)
-                yield delta
-        except Exception as e:
-            logger.error(f"Streaming LLM call failed: {e}")
-            raise
+        attempt = 0
+        while True:
+            attempt += 1
+            _LLM_SEMAPHORE.acquire()
+            try:
+                stream = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=all_messages,
+                    temperature=temperature if temperature is not None else self.temperature,
+                    max_tokens=max_tokens or self.max_tokens,
+                    stream=True,
+                )
+                for event in stream:
+                    delta = event.choices[0].delta.content or ""
+                    if not delta:
+                        continue
+                    collected.append(delta)
+                    yield delta
+                break
+            except Exception as e:
+                error_text = str(e)
+                retry_after = _parse_retry_after_seconds(error_text)
+                if _is_daily_limit_error(error_text):
+                    logger.error(
+                        "Daily Groq token limit reached during streaming. "
+                        f"Provider says: {error_text}"
+                    )
+                    raise DailyRateLimitError(
+                        f"Daily token limit reached. {error_text}"
+                    ) from e
+
+                if retry_after is not None and attempt < 3:
+                    logger.warning(
+                        f"Groq streaming rate limit response suggests retry after {retry_after:.1f}s. "
+                        f"Sleeping before retry #{attempt}..."
+                    )
+                    time.sleep(retry_after)
+                elif attempt < 3:
+                    backoff = min(2 ** attempt, 10)
+                    logger.warning(
+                        f"Streaming LLM call failed on attempt {attempt}. Retrying after {backoff}s..."
+                    )
+                    time.sleep(backoff)
+                else:
+                    logger.error(f"Streaming LLM call failed after {attempt} attempts: {error_text}")
+                    raise
+            finally:
+                _LLM_SEMAPHORE.release()
 
         if use_cache and collected:
             _memory_cache[key] = "".join(collected)
