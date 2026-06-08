@@ -1,5 +1,290 @@
 [
   {
+    "company": "OpenAI",
+    "timestamp": "20260605_195936",
+    "datetime": "Jun 05, 2026 19:59",
+    "lead_score": 43,
+    "competitor_count": 5,
+    "signal_count": 11,
+    "competitors": [
+      "Google DeepMind",
+      "Microsoft AI",
+      "Anthropic",
+      "Meta AI",
+      "Amazon SageMaker"
+    ],
+    "filepath": "reports/intel_openai_20260605_195936.md",
+    "rag_chunks": 21
+  },
+  {
+    "company": "OpenAI",
+    "timestamp": "20260605_194109",
+    "datetime": "Jun 05, 2026 19:41",
+    "lead_score": 43,
+    "competitor_count": 5,
+    "signal_count": 11,
+    "competitors": [
+      "Google DeepMind",
+      "Microsoft AI",
+      "Anthropic",
+      "Meta AI",
+      "Amazon SageMaker"
+    ],
+    "filepath": "reports/intel_openai_20260605_194109.md",
+    "rag_chunks": 21
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192754",
+    "datetime": "Jun 05, 2026 19:27",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192754.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192752",
+    "datetime": "Jun 05, 2026 19:27",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192752.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192613",
+    "datetime": "Jun 05, 2026 19:26",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192613.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192509",
+    "datetime": "Jun 05, 2026 19:25",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192509.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192504",
+    "datetime": "Jun 05, 2026 19:25",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192504.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Zoho CRM",
+    "timestamp": "20260605_192241",
+    "datetime": "Jun 05, 2026 19:22",
+    "lead_score": 45,
+    "competitor_count": 5,
+    "signal_count": 16,
+    "competitors": [
+      "Salesforce",
+      "HubSpot",
+      "Freshsales",
+      "Pipedrive",
+      "Microsoft Dynamics"
+    ],
+    "filepath": "reports/intel_zoho_crm_20260605_192241.md",
+    "rag_chunks": 12
+  },
+  {
+    "company": "Anthropic",
+    "timestamp": "20260604_211406",
+    "datetime": "Jun 04, 2026 21:14",
+    "lead_score": 90,
+    "competitor_count": 4,
+    "signal_count": 19,
+    "competitors": [
+      "Stainless",
+      "Roku",
+      "Clay",
+      "BlueDot Impact"
+    ],
+    "filepath": "reports/intel_anthropic_20260604_211406.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Anthropic",
+    "timestamp": "20260604_211353",
+    "datetime": "Jun 04, 2026 21:13",
+    "lead_score": 90,
+    "competitor_count": 4,
+    "signal_count": 19,
+    "competitors": [
+      "Stainless",
+      "Roku",
+      "Clay",
+      "BlueDot Impact"
+    ],
+    "filepath": "reports/intel_anthropic_20260604_211353.md",
+    "rag_chunks": 11
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_205008",
+    "datetime": "Jun 04, 2026 20:50",
+    "lead_score": 70,
+    "competitor_count": 5,
+    "signal_count": 25,
+    "competitors": [
+      "Trello",
+      "Asana",
+      "Airtable",
+      "Monday.com",
+      "ClickUp"
+    ],
+    "filepath": "reports/intel_notion_20260604_205008.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_205003",
+    "datetime": "Jun 04, 2026 20:50",
+    "lead_score": 70,
+    "competitor_count": 5,
+    "signal_count": 25,
+    "competitors": [
+      "Trello",
+      "Asana",
+      "Airtable",
+      "Monday.com",
+      "ClickUp"
+    ],
+    "filepath": "reports/intel_notion_20260604_205003.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_204839",
+    "datetime": "Jun 04, 2026 20:48",
+    "lead_score": 70,
+    "competitor_count": 5,
+    "signal_count": 25,
+    "competitors": [
+      "Trello",
+      "Asana",
+      "Airtable",
+      "Monday.com",
+      "ClickUp"
+    ],
+    "filepath": "reports/intel_notion_20260604_204839.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_203610",
+    "datetime": "Jun 04, 2026 20:36",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_notion_20260604_203610.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "salesforce",
+    "timestamp": "20260604_194744",
+    "datetime": "Jun 04, 2026 19:47",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_salesforce_20260604_194744.md",
+    "rag_chunks": 0
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_191009",
+    "datetime": "Jun 04, 2026 19:10",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_notion_20260604_191009.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_191004",
+    "datetime": "Jun 04, 2026 19:10",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_notion_20260604_191004.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_190807",
+    "datetime": "Jun 04, 2026 19:08",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_notion_20260604_190807.md",
+    "rag_chunks": 26
+  },
+  {
+    "company": "Notion",
+    "timestamp": "20260604_145219",
+    "datetime": "Jun 04, 2026 14:52",
+    "lead_score": 0,
+    "competitor_count": 0,
+    "signal_count": 0,
+    "competitors": [],
+    "filepath": "reports/intel_notion_20260604_145219.md",
+    "rag_chunks": 0
+  },
+  {
     "company": "ElevenLabs",
     "timestamp": "20260604_114550",
     "datetime": "Jun 04, 2026 11:45",

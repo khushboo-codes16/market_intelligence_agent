@@ -557,16 +557,16 @@ def render_lead_tab(state: Dict[str, Any]):
                 for sig in slist:
                     if isinstance(sig, dict):
                         desc = sig.get("description", "")
-                        conf = sig.get("confidence", "medium")
+                        signal_confidence = sig.get("confidence", "medium")
                         source = sig.get("source", "")
                         date = sig.get("date_mentioned", "")
                     else:
                         desc = sig.description
-                        conf = sig.confidence
+                        signal_confidence = sig.confidence
                         source = sig.source
                         date = sig.date_mentioned
 
-                    conf_color = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(conf, "⚪")
+                    conf_color = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(signal_confidence, "⚪")
                     st.markdown(f"{conf_color} **{desc}**")
                     if date or source:
                         st.caption(f"{date}{' · ' if date and source else ''}{source}")
